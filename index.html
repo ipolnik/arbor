@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Forum&family=Onest:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-html,body{margin:0}
+html,body{margin:0;overflow-x:clip;max-width:100%}
 img{max-width:100%}
 [hidden]{display:none!important}
 
@@ -50,7 +50,7 @@ a{color:inherit}
 .pill.admin{border-color:var(--forest);color:var(--forest)}
 
 .hero{padding-block:28px 8px;position:relative}
-.hero::before{content:"";position:absolute;z-index:-1;inset:-20px -40px auto auto;width:260px;height:260px;border-radius:50%;
+.hero::before{content:"";position:absolute;z-index:-1;inset:-20px 0 auto auto;width:min(260px,70vw);height:260px;border-radius:50%;
   background:radial-gradient(circle,color-mix(in srgb,#F5B935 35%,transparent),transparent 70%);pointer-events:none}
 .hero h1{font-family:var(--f-display);font-weight:400;font-size:clamp(38px,10vw,64px);line-height:1.02;margin:0;text-wrap:balance}
 .hero h1 em{font-style:normal;color:var(--wood)}
