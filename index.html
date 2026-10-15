@@ -51,6 +51,7 @@ a{color:inherit}
 .pill.admin{border-color:var(--forest);color:var(--forest);padding:8px 12px}
 .pill.ig{display:inline-flex;align-items:center;gap:6px}
 .pill.icon{width:42px;height:42px;padding:0;display:grid;place-items:center}
+.btn.edit{flex:0 0 auto;width:54px;padding:0}
 /* login sits at the top so the phone keyboard never covers it */
 dialog#login{margin:max(24px,env(safe-area-inset-top)) auto auto;width:calc(100% - 32px);max-width:440px;border-radius:20px}
 @media (max-width:400px){.logo{font-size:22px;letter-spacing:.12em;gap:8px}.logo .mark{width:36px;height:36px}.top .wrap{gap:8px}.top .acts{gap:6px}.pill.ig{padding:8px 12px}}
@@ -234,7 +235,6 @@ function renderSite(S){
 <header class="top"><div class="wrap">
   <a class="logo" href="#top">${C.logo ? `<img class="mark" src="${esc(src(C.logo))}" alt="">` : ""}<span>ARBOR<small>${esc(C.city)}</small></span></a>
   <div class="acts">
-    <button class="pill admin icon" id="admBtn" hidden aria-label="Управление сайтом" title="Управление сайтом"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
     ${C.instagram ? `<a class="pill ig" href="https://www.instagram.com/${esc(C.instagram)}/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>Instagram</a>` : ""}
   </div>
 </div></header>
@@ -269,6 +269,7 @@ function renderSite(S){
 </main>
 <div class="bar"><div class="inner">
   <a class="btn primary" href="${wa("Здравствуйте! Пишу с сайта Arbor, хочу узнать про мебель.")}" target="_blank" rel="noopener">Написать в WhatsApp</a>
+  <button class="btn ghost edit" id="admBtn" hidden aria-label="Управление сайтом" title="Управление сайтом"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
 </div></div>
 <dialog class="sheet" id="sheet" aria-labelledby="sTitle">
   <div style="position:relative"><div class="gallery" id="sGal"></div><div class="dots" id="sDots"></div>
