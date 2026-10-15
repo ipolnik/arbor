@@ -51,6 +51,8 @@ a{color:inherit}
 .pill.admin{border-color:var(--forest);color:var(--forest);padding:8px 12px}
 .pill.ig{display:inline-flex;align-items:center;gap:6px}
 .pill.icon{width:42px;height:42px;padding:0;display:grid;place-items:center}
+/* login sits at the top so the phone keyboard never covers it */
+dialog#login{margin:max(24px,env(safe-area-inset-top)) auto auto;width:calc(100% - 32px);max-width:440px;border-radius:20px}
 @media (max-width:400px){.logo{font-size:22px;letter-spacing:.12em;gap:8px}.logo .mark{width:36px;height:36px}.top .wrap{gap:8px}.top .acts{gap:6px}.pill.ig{padding:8px 12px}}
 
 .hero{padding-block:28px 8px;position:relative}
