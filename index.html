@@ -12,7 +12,7 @@
 <link rel="icon" href="/images/uploads/logo.jpg">
 <link rel="apple-touch-icon" href="/images/uploads/logo.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Forum&family=Onest:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Forum&family=Onest:wght@400;500;600;800&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
 html,body{margin:0;overflow-x:clip;max-width:100%}
 img{max-width:100%}
@@ -45,7 +45,8 @@ a{color:inherit}
 .logo{font-family:var(--f-display);font-size:26px;letter-spacing:.18em;text-decoration:none;line-height:1}
 .logo small{display:block;font-family:var(--f-body);font-size:13px;letter-spacing:.06em;color:var(--muted);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .logo{display:flex;align-items:center;gap:10px;min-width:0}
-.logo > span{min-width:0}
+.logo > span{min-width:0;font-family:var(--f-body);font-weight:800;letter-spacing:.12em}
+.logo small{font-weight:400}
 .logo .mark{width:42px;height:42px;border-radius:50%;object-fit:cover;flex:none;border:1px solid var(--line)}
 .pill{font:inherit;font-size:16px;font-weight:500;text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:8px 14px;background:var(--surface);color:var(--ink);cursor:pointer}
 .pill.admin{border-color:var(--forest);color:var(--forest);padding:8px 12px}
@@ -56,13 +57,13 @@ a{color:inherit}
 dialog#login{margin:max(24px,env(safe-area-inset-top)) auto auto;width:calc(100% - 32px);max-width:440px;border-radius:20px}
 @media (max-width:400px){.logo{font-size:22px;letter-spacing:.12em;gap:8px}.logo .mark{width:36px;height:36px}.top .wrap{gap:8px}.top .acts{gap:6px}.pill.ig{padding:8px 12px}}
 
-.hero{padding-block:28px 8px;position:relative}
-.hero::before{content:"";position:absolute;z-index:-1;inset:-20px 0 auto auto;width:min(260px,70vw);height:260px;border-radius:50%;
+.hero{padding-block:28px 8px;position:relative;text-align:center}
+.hero::before{content:"";position:absolute;z-index:-1;inset:-30px 0 auto 0;margin:auto;width:min(300px,80vw);height:260px;border-radius:50%;
   background:radial-gradient(circle,color-mix(in srgb,#F5B935 35%,transparent),transparent 70%);pointer-events:none}
-.hero h1{font-family:var(--f-display);font-weight:400;font-size:clamp(42px,11.5vw,72px);line-height:1.02;margin:0;text-wrap:balance}
+.hero h1{font-family:var(--f-body);font-weight:800;font-size:clamp(36px,10vw,64px);line-height:1.08;letter-spacing:-.01em;margin:0;text-wrap:balance}
 .hero h1 em{font-style:normal;color:var(--wood)}
-.hero p{color:var(--muted);max-width:34ch;margin:14px 0 0;font-size:19px}
-.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;font-size:16px}
+.hero p{color:var(--muted);max-width:34ch;margin:14px auto 0;font-size:19px}
+.facts{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:20px;font-size:16px}
 .facts span{border-radius:999px;padding:7px 12px;font-weight:500}
 .facts span:nth-child(3n+1){background:#FFF1D6;color:#8A5300}
 .facts span:nth-child(3n+2){background:#E3F6EA;color:#0F6B3A}
