@@ -1,1 +1,3 @@
-# arbor
+# Arbor
+
+Arbor furniture project.
