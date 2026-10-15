@@ -104,7 +104,8 @@ section h2{font-family:var(--f-display);font-weight:400;font-size:34px;margin:48
 .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-block:12px}
 .row dt{color:var(--muted)}
 .row dd{margin:0;font-weight:500}
-footer{font-family:var(--f-mono);font-size:11px;color:var(--muted);padding-block:16px 24px}
+footer{font-family:var(--f-mono);font-size:11px;color:var(--muted);padding-block:16px 24px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer .owner{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
 
 .bar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);
   padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
@@ -258,7 +259,7 @@ function renderSite(S){
       ${C.hours ? `<div class="row"><dt>Время работы</dt><dd>${esc(C.hours)}</dd></div>` : ""}
     </dl>
   </section>
-  <footer>${esc(T.footer)}</footer>
+  <footer><span>${esc((T.footer || "").replace(/\s*·\s*товары и цены пока примеры/i, ""))}</span><a class="owner" href="#admin">Вход для владельца</a></footer>
 </main>
 <div class="bar"><div class="inner">
   <a class="btn primary" href="${wa("Здравствуйте! Пишу с сайта Arbor, хочу узнать про мебель.")}" target="_blank" rel="noopener">Написать в WhatsApp</a>
@@ -635,7 +636,9 @@ async function load(){
 load().then(S => {
   SAVED = S; renderSite(S);
   if (PW) showAdminButton();
-  if (location.hash === "#admin") { history.replaceState(null, "", location.pathname); PW ? openAdmin() : askPassword(); }
+  const fromHash = () => { if (location.hash !== "#admin") return; history.replaceState(null, "", location.pathname); PW ? (showAdminButton(), openAdmin()) : askPassword(); };
+  fromHash();
+  addEventListener("hashchange", fromHash);
 }).catch(() => { $("#app").innerHTML = '<p class="wrap" style="padding:40px 16px">Не удалось загрузить сайт. Обновите страницу.</p>'; });
 })();
 </script>
