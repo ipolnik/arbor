@@ -79,8 +79,6 @@ dialog#login{margin:max(24px,env(safe-area-inset-top)) auto auto;width:calc(100%
 @media (min-width:620px){.grid{grid-template-columns:1fr 1fr}}
 @media (min-width:900px){.grid{grid-template-columns:repeat(3,1fr)}}
 .empty{color:var(--muted);padding:24px 0}
-.groups{display:grid;gap:8px}
-.groups section h2.group{margin:28px 0 14px;font-size:28px}
 .card{display:flex;flex-direction:column;text-align:left;font:inherit;color:inherit;background:var(--surface);
   border:1px solid var(--line);border-radius:16px;overflow:hidden;cursor:pointer;padding:0;transition:transform .2s;
   box-shadow:0 6px 20px rgb(238 108 31 / .08)}
@@ -288,7 +286,7 @@ function renderSite(S){
   const used = new Set(visible.map(p => p.cat));
   const chips = $("#chips");
   const cats = [["all","Все"], ...Object.entries(CATS).filter(([k]) => used.has(k))];
-  chips.hidden = true; // products are grouped under headings instead (see grid)
+  chips.hidden = cats.length < 3;
   cats.forEach(([k, label]) => {
     const b = document.createElement("button");
     b.className = "chip"; b.textContent = label; b.setAttribute("aria-pressed", k === current);
@@ -300,16 +298,7 @@ function renderSite(S){
     const g = $("#grid"); g.innerHTML = "";
     const list = visible.filter(p => current === "all" || p.cat === current);
     if (!list.length) { g.innerHTML = '<p class="empty">Скоро здесь появятся товары.</p>'; return; }
-    const groups = Object.keys(CATS).map(k => [k, list.filter(p => p.cat === k)]).filter(([, ps]) => ps.length);
-    const titled = groups.length > 1;
-    groups.forEach(([k, ps]) => {
-    let box = g;
-    if (titled) {
-      const h = document.createElement("h2"); h.className = "group"; h.textContent = CATS[k];
-      box = document.createElement("div"); box.className = "grid";
-      const sec = document.createElement("section"); sec.append(h, box); g.appendChild(sec);
-    }
-    ps.forEach(p => {
+    list.forEach(p => {
       const c = document.createElement("button");
       c.className = "card";
       const n = (p.photos||[]).length;
@@ -318,10 +307,8 @@ function renderSite(S){
         <div class="spec">${[p.sizes && p.sizes[0] ? esc(p.sizes[0]) + " см" : "", esc((p.wood||"").toLowerCase()), p.days ? esc(p.days) + " дн." : ""].filter(Boolean).join(" · ")}</div>
         <div class="price">${priceHTML(p)}</div></div>`;
       c.onclick = () => openSheet(p);
-      box.appendChild(c);
+      g.appendChild(c);
     });
-    });
-    if (titled) g.className = "groups"; else g.className = "grid";
   }
   grid();
 
