@@ -1,6 +1,19 @@
 [build]
   publish = "."
 
+[functions]
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/admin/"
+  to = "/#admin"
+  status = 302
+
+[[redirects]]
+  from = "/admin"
+  to = "/#admin"
+  status = 302
+
 [[headers]]
   for = "/content/*"
   [headers.values]

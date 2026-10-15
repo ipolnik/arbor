@@ -138,6 +138,52 @@ dialog::backdrop{background:rgb(10 14 11 / .5)}
 .close{position:absolute;top:12px;right:12px;z-index:2;width:40px;height:40px;border-radius:50%;border:0;background:var(--surface);
   color:var(--ink);font-size:22px;cursor:pointer;box-shadow:0 2px 10px rgb(0 0 0 / .15)}
 
+/* ===== admin ===== */
+dialog.adm{border:0;padding:0;margin:0;width:100%;max-width:none;height:100%;max-height:none;background:var(--bg);color:var(--ink)}
+@media (min-width:760px){dialog.adm{margin:auto;max-width:720px;height:92vh;border-radius:20px}}
+.adm .frame{display:flex;flex-direction:column;height:100%}
+.adm header{display:flex;align-items:center;gap:12px;padding:calc(12px + env(safe-area-inset-top,0px)) 16px 12px;border-bottom:1px solid var(--line);background:var(--surface)}
+.adm header h2{font-family:var(--f-display);font-weight:400;font-size:24px;margin:0;flex:1}
+.adm .x{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:20px;cursor:pointer}
+.tabs{display:flex;gap:6px;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--surface);overflow-x:auto}
+.tabs button{font:inherit;font-size:15px;border:0;background:transparent;color:var(--muted);padding:8px 12px;border-radius:8px;cursor:pointer;flex:none}
+.tabs button[aria-selected="true"]{background:var(--bg);color:var(--ink);font-weight:600}
+.adm main{flex:1;overflow:auto;padding:16px 16px 24px}
+.adm .foot{display:flex;align-items:center;gap:12px;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);background:var(--surface)}
+.adm .foot .msg{flex:1;font-size:13px;color:var(--muted);line-height:1.3}
+.adm .foot .msg.warn{color:var(--wood)}
+.adm .foot .msg.err{color:var(--sale)}
+.adm .foot .btn{flex:0 0 auto}
+.list{display:grid;gap:10px;margin-bottom:16px}
+.item{display:grid;grid-template-columns:56px 1fr auto;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px}
+.item.off{opacity:.55}
+.item .th{width:56px;height:56px;border-radius:8px;overflow:hidden;background:color-mix(in srgb,var(--wood-2) 25%,var(--surface));display:grid;place-items:center}
+.item .th img{width:100%;height:100%;object-fit:cover}
+.item .th svg{width:80%}
+.item .t{min-width:0}
+.item .t b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
+.item .t span{font-size:13px;color:var(--muted)}
+.item .ops{display:flex;gap:4px}
+.ib{width:36px;height:36px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:15px;cursor:pointer}
+.ib:disabled{opacity:.35}
+.fld{display:grid;gap:6px;margin-bottom:14px}
+.fld > span{font-size:13px;color:var(--muted)}
+.fld small{font-size:12px;color:var(--muted)}
+.fld input,.fld textarea,.fld select{font:inherit;font-size:16px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:11px 12px;width:100%}
+.fld textarea{min-height:96px;resize:vertical}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.chk{display:flex;align-items:center;gap:10px;margin-bottom:14px;font-size:15px}
+.chk input{width:20px;height:20px;accent-color:var(--forest)}
+.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px;margin-bottom:8px}
+.ph{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--surface)}
+.ph img{width:100%;height:100%;object-fit:cover}
+.ph .main{position:absolute;left:4px;top:4px;font-size:10px;font-family:var(--f-mono);background:var(--forest);color:var(--forest-ink);border-radius:4px;padding:1px 5px}
+.ph .pops{position:absolute;right:4px;bottom:4px;display:flex;gap:4px}
+.ph .pops button{width:28px;height:28px;border-radius:6px;border:0;background:rgb(0 0 0 / .6);color:#fff;font-size:13px;cursor:pointer}
+.add-ph{aspect-ratio:1;border-radius:10px;border:1.5px dashed var(--wood-2);display:grid;place-items:center;text-align:center;font-size:13px;color:var(--wood);cursor:pointer;padding:6px}
+.add-ph input{display:none}
+.back{font:inherit;font-size:15px;border:0;background:transparent;color:var(--forest);padding:0 0 14px;cursor:pointer}
+.hint{font-size:13px;color:var(--muted);margin:0 0 14px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -146,6 +192,7 @@ dialog::backdrop{background:rgb(10 14 11 / .5)}
 <script>
 
 (function(){
+let SAVED = null;
 const CATS = {bed:"Кровати",kids:"Детское",night:"Тумбы",dresser:"Комоды",wardrobe:"Шкафы",table:"Столы",chair:"Стулья",shelf:"Полки",other:"Другое"};
 const W = "var(--wood)", W2 = "var(--wood-2)";
 const ART = {
@@ -180,6 +227,7 @@ function renderSite(S){
 <header class="top"><div class="wrap">
   <a class="logo" href="#top">${C.logo ? `<img class="mark" src="${esc(src(C.logo))}" alt="">` : ""}<span>ARBOR<small>Мебель · ${esc(C.city)}</small></span></a>
   <div class="acts">
+    <button class="pill admin" id="admBtn" hidden>Управление</button>
     ${C.instagram ? `<a class="pill" href="https://www.instagram.com/${esc(C.instagram)}/" target="_blank" rel="noopener">Instagram</a>` : ""}
   </div>
 </div></header>
@@ -288,10 +336,307 @@ function renderSite(S){
   sheet.addEventListener("click", e => { if (e.target === sheet) sheet.close(); });
 }
 
-fetch("/content/site.json", {cache: "no-cache"})
-  .then(r => r.json())
-  .then(renderSite)
-  .catch(() => { document.getElementById("app").innerHTML = '<p class="wrap" style="padding:40px 16px">Не удалось загрузить сайт. Обновите страницу.</p>'; });
+
+/* ===================== admin (password, see netlify/functions) ===================== */
+const KEY = "arbor-admin";
+let PW = "";
+try { PW = localStorage.getItem(KEY) || ""; } catch (e) {}
+const remember = pw => { PW = pw; try { localStorage.setItem(KEY, pw); } catch (e) {} };
+function forget(){ PW = ""; try { localStorage.removeItem(KEY); } catch (e) {} }
+
+async function api(path, opts = {}){
+  const r = await fetch(path, {...opts, headers: {...(opts.headers || {}), authorization: "Bearer " + PW}});
+  let data = {};
+  try { data = await r.json(); } catch (e) {}
+  if (r.status === 401) { forget(); throw {code: "auth"}; }
+  if (!r.ok) throw {code: data.error || ("http_" + r.status)};
+  return data;
+}
+
+const ASSETS = {
+  upload: async blob => {
+    const r = await api("/api/upload", {method: "POST", body: blob, headers: {"content-type": blob.type || "image/jpeg"}});
+    return {id: r.url};
+  }
+};
+
+function showAdminButton(){
+  const b = $("#admBtn");
+  if (!b) return;
+  b.hidden = false;
+  b.onclick = openAdmin;
+}
+
+function askPassword(){
+  let dlg = $("#login");
+  if (!dlg) {
+    dlg = document.createElement("dialog");
+    dlg.className = "sheet"; dlg.id = "login";
+    dlg.innerHTML = `<form class="in" method="dialog" id="lgForm">
+      <h3>Вход для владельца</h3>
+      <label class="fld"><span>Пароль</span><input type="password" id="lgPw" autocomplete="current-password" required></label>
+      <p id="lgErr" style="color:var(--sale)"></p>
+      <div style="display:flex;gap:10px"><button class="btn primary" id="lgGo">Войти</button><button class="btn ghost" type="button" id="lgNo">Отмена</button></div>
+    </form>`;
+    document.body.appendChild(dlg);
+    $("#lgNo").onclick = () => dlg.close();
+    $("#lgForm").onsubmit = async e => {
+      e.preventDefault();
+      const pw = $("#lgPw").value.trim();
+      $("#lgGo").disabled = true; $("#lgErr").textContent = "";
+      try {
+        const r = await fetch("/api/login", {method: "POST", headers: {"content-type": "application/json"}, body: JSON.stringify({password: pw})});
+        if (!r.ok) throw new Error(r.status === 401 ? "Неверный пароль." : "Сервер недоступен, попробуйте позже.");
+        remember(pw); dlg.close(); showAdminButton(); openAdmin();
+      } catch (err) { $("#lgErr").textContent = err.message || "Ошибка входа."; }
+      $("#lgGo").disabled = false;
+    };
+  }
+  $("#lgPw").value = "";
+  $("#lgErr").textContent = "";
+  dlg.showModal();
+}
+
+let D = null, tab = "products", editing = null, dirty = false, busy = false;
+
+function openAdmin(){
+  if (!dirty) { D = clone(SAVED); tab = "products"; editing = null; }
+  let dlg = $("#adm");
+  if (!dlg) {
+    dlg = document.createElement("dialog");
+    dlg.className = "adm"; dlg.id = "adm";
+    dlg.innerHTML = `<div class="frame">
+      <header><h2>Управление сайтом</h2><button class="btn ghost sm" id="admOut">Выйти</button><button class="x" id="admX" aria-label="Закрыть">×</button></header>
+      <div class="tabs" role="tablist">
+        <button data-t="products" role="tab">Товары</button>
+        <button data-t="contacts" role="tab">Контакты</button>
+        <button data-t="texts" role="tab">Тексты</button>
+      </div>
+      <main id="admBody"></main>
+      <div class="foot"><div class="msg" id="admMsg"></div><button class="btn primary" id="admSave" disabled>Опубликовать</button></div>
+    </div>`;
+    document.body.appendChild(dlg);
+    dlg.querySelectorAll(".tabs button").forEach(b => b.onclick = () => { tab = b.dataset.t; editing = null; draw(); });
+    $("#admX").onclick = closeAdmin;
+    dlg.addEventListener("cancel", e => { e.preventDefault(); closeAdmin(); });
+    $("#admSave").onclick = save;
+    $("#admOut").onclick = () => { if (dirty && !confirm("Изменения не опубликованы. Выйти?")) return; forget(); dlg.close(); renderSite(SAVED); };
+  }
+  draw();
+  dlg.showModal();
+}
+
+function closeAdmin(){
+  if (busy) return;
+  if (dirty && !confirm("Изменения не опубликованы. Закрыть и отменить их?")) return;
+  dirty = false;
+  $("#adm").close();
+}
+
+function mark(){
+  dirty = true;
+  status("Есть изменения. Нажмите «Опубликовать», чтобы их увидели покупатели.", "warn");
+  $("#admSave").disabled = false;
+}
+function status(text, kind=""){ const m = $("#admMsg"); m.textContent = text; m.className = "msg " + kind; }
+
+function draw(){
+  document.querySelectorAll("#adm .tabs button").forEach(b => b.setAttribute("aria-selected", b.dataset.t === tab));
+  const body = $("#admBody");
+  if (!dirty) { status("Покупатели увидят изменения после публикации."); $("#admSave").disabled = true; }
+  if (tab === "products") editing === null ? drawList(body) : drawEditor(body, editing);
+  if (tab === "contacts") drawForm(body, D.config, [
+    ["whatsapp", "Номер WhatsApp", "Только цифры, с кодом страны: 77011234567", "tel"],
+    ["phone", "Телефон на сайте", "Как показывать: +7 701 123 45 67", "tel"],
+    ["instagram", "Instagram", "Имя аккаунта без @", "text"],
+    ["city", "Город (под логотипом)", "", "text"],
+    ["address", "Адрес мастерской", "", "text"],
+    ["gis", "Ссылка на 2ГИС", "Ссылка на вашу карточку в 2ГИС", "url"],
+    ["hours", "Время работы", "", "text"]
+  ]);
+  if (tab === "contacts") drawLogo(body);
+  if (tab === "texts") drawTexts(body);
+  body.scrollTop = 0;
+}
+
+function drawLogo(body){
+  const d = document.createElement("div");
+  d.className = "fld";
+  d.innerHTML = `<span>Логотип</span><div style="display:flex;gap:12px;align-items:center">${D.config.logo ? `<img src="${esc(src(D.config.logo))}" alt="" style="width:56px;height:56px;border-radius:50%;object-fit:cover">` : ""}${ASSETS ? `<label class="btn ghost sm">${D.config.logo ? "Заменить" : "Загрузить"}<input type="file" accept="image/*" hidden id="lgIn"></label>` : ""}</div>`;
+  body.prepend(d);
+  const i = $("#lgIn");
+  if (i) i.onchange = async () => {
+    const f = i.files[0]; if (!f) return;
+    try { const r = await ASSETS.upload(await shrink(f)); D.config.logo = r.id; mark(); draw(); }
+    catch (e) { status("Не удалось загрузить логотип.", "err"); }
+  };
+}
+
+function drawForm(body, obj, fields){
+  body.innerHTML = fields.map(([k, label, hint, type]) =>
+    `<label class="fld"><span>${label}</span><input data-k="${k}" type="${type}" value="${esc(obj[k])}">${hint ? `<small>${hint}</small>` : ""}</label>`).join("");
+  body.querySelectorAll("input").forEach(i => i.oninput = () => { obj[i.dataset.k] = i.value.trim(); mark(); });
+}
+
+function drawTexts(body){
+  const T = D.texts;
+  body.innerHTML = `
+    <label class="fld"><span>Заголовок</span><textarea data-k="title" style="min-height:70px">${esc(T.title)}</textarea><small>Слово в *звёздочках* будет выделено цветом.</small></label>
+    <label class="fld"><span>Текст под заголовком</span><textarea data-k="lead">${esc(T.lead)}</textarea></label>
+    <label class="fld"><span>Плашки под текстом</span><input data-k="facts" value="${esc((T.facts||[]).join(", "))}"><small>Через запятую.</small></label>
+    <label class="fld"><span>Подпись внизу страницы</span><input data-k="footer" value="${esc(T.footer)}"></label>`;
+  body.querySelectorAll("[data-k]").forEach(i => i.oninput = () => {
+    T[i.dataset.k] = i.dataset.k === "facts" ? i.value.split(",").map(s => s.trim()).filter(Boolean) : i.value;
+    mark();
+  });
+}
+
+function thumb(p){ return p.photos && p.photos[0] ? `<img src="${esc(src(p.photos[0]))}" alt="">` : art(p.cat); }
+
+function drawList(body){
+  const P = D.products;
+  body.innerHTML = `<p class="hint">Нажмите ✎, чтобы изменить товар. Стрелки меняют порядок на сайте.</p>
+    <div class="list">${P.map((p, i) => `
+      <div class="item${p.hidden ? " off" : ""}">
+        <div class="th">${thumb(p)}</div>
+        <div class="t"><b>${esc(p.name) || "Без названия"}</b><span>${fmt(p.price)}${p.hidden ? " · скрыт" : ""}${p.old ? " · акция" : ""}</span></div>
+        <div class="ops">
+          <button class="ib" data-up="${i}" ${i ? "" : "disabled"} aria-label="Выше">↑</button>
+          <button class="ib" data-dn="${i}" ${i < P.length - 1 ? "" : "disabled"} aria-label="Ниже">↓</button>
+          <button class="ib" data-ed="${i}" aria-label="Изменить">✎</button>
+        </div>
+      </div>`).join("")}</div>
+    <button class="btn ghost" id="addP" style="width:100%">+ Добавить товар</button>`;
+  body.querySelectorAll("[data-up]").forEach(b => b.onclick = () => { const i = +b.dataset.up; [P[i-1], P[i]] = [P[i], P[i-1]]; mark(); draw(); });
+  body.querySelectorAll("[data-dn]").forEach(b => b.onclick = () => { const i = +b.dataset.dn; [P[i+1], P[i]] = [P[i], P[i+1]]; mark(); draw(); });
+  body.querySelectorAll("[data-ed]").forEach(b => b.onclick = () => { editing = +b.dataset.ed; draw(); });
+  $("#addP").onclick = () => {
+    P.push({id: "p" + Date.now().toString(36), cat: "bed", name: "", price: 0, sizes: [], wood: "", finish: "", days: "", desc: "", photos: []});
+    editing = P.length - 1; mark(); draw();
+  };
+}
+
+function drawEditor(body, idx){
+  const p = D.products[idx];
+  body.innerHTML = `
+    <button class="back" id="bk">← Все товары</button>
+    <div class="fld"><span>Фото</span>
+      <div class="photos" id="phs"></div>
+      <small>Первое фото показывается в каталоге.${ASSETS ? "" : " Загрузка фото недоступна в этом окне."}</small>
+    </div>
+    <label class="fld"><span>Название</span><input data-k="name" value="${esc(p.name)}" placeholder="Кровать «Тайга»"></label>
+    <label class="fld"><span>Категория</span><select data-k="cat">${Object.entries(CATS).map(([k, l]) => `<option value="${k}"${k === p.cat ? " selected" : ""}>${l}</option>`).join("")}</select></label>
+    <div class="two">
+      <label class="fld"><span>Цена, ₸</span><input data-k="price" type="number" inputmode="numeric" min="0" value="${p.price || ""}"></label>
+      <label class="fld"><span>Старая цена, ₸</span><input data-k="old" type="number" inputmode="numeric" min="0" value="${p.old || ""}"><small>Для акции, иначе пусто</small></label>
+    </div>
+    <label class="fld"><span>Размеры, см</span><input data-k="sizes" value="${esc((p.sizes||[]).join(", "))}" placeholder="140×200, 160×200"><small>Через запятую</small></label>
+    <div class="two">
+      <label class="fld"><span>Дерево</span><input data-k="wood" value="${esc(p.wood)}" placeholder="Сосна"></label>
+      <label class="fld"><span>Срок, дней</span><input data-k="days" value="${esc(p.days)}" placeholder="14–18"></label>
+    </div>
+    <label class="fld"><span>Покрытие</span><input data-k="finish" value="${esc(p.finish)}" placeholder="Масло, натуральный"></label>
+    <label class="fld"><span>Описание</span><textarea data-k="desc">${esc(p.desc)}</textarea></label>
+    <label class="chk"><input type="checkbox" data-k="hidden"${p.hidden ? " checked" : ""}> Скрыть с сайта (нет в наличии)</label>
+    <div style="display:flex;gap:10px;margin-top:8px">
+      <button class="btn ghost" id="done">Готово</button>
+      <button class="btn danger sm" id="del">Удалить</button>
+    </div>`;
+  body.querySelectorAll("[data-k]").forEach(i => {
+    const ev = i.type === "checkbox" || i.tagName === "SELECT" ? "onchange" : "oninput";
+    i[ev] = () => {
+      const k = i.dataset.k;
+      if (k === "price") p.price = Math.max(0, Math.round(+i.value || 0));
+      else if (k === "old") { const v = Math.round(+i.value || 0); if (v > 0) p.old = v; else delete p.old; }
+      else if (k === "sizes") p.sizes = i.value.split(",").map(s => s.trim()).filter(Boolean);
+      else if (k === "hidden") { if (i.checked) p.hidden = true; else delete p.hidden; }
+      else p[k] = i.value;
+      mark();
+    };
+  });
+  $("#bk").onclick = $("#done").onclick = () => { editing = null; draw(); };
+  $("#del").onclick = () => {
+    if (!confirm(`Удалить «${p.name || "товар"}»?`)) return;
+    D.products.splice(idx, 1); editing = null; mark(); draw();
+  };
+  drawPhotos(p);
+}
+
+function drawPhotos(p){
+  const box = $("#phs");
+  p.photos = p.photos || [];
+  box.innerHTML = p.photos.map((ph, i) => `
+    <div class="ph"><img src="${esc(src(ph))}" alt="">${i === 0 ? '<span class="main">ГЛАВНОЕ</span>' : ""}
+      <div class="pops">${i ? `<button data-first="${i}" aria-label="Сделать главным">★</button>` : ""}<button data-rm="${i}" aria-label="Убрать">✕</button></div>
+    </div>`).join("") +
+    (ASSETS ? `<label class="add-ph"><input type="file" accept="image/*" multiple id="phIn"><span>+ Добавить фото</span></label>` : "");
+  box.querySelectorAll("[data-rm]").forEach(b => b.onclick = () => { p.photos.splice(+b.dataset.rm, 1); mark(); drawPhotos(p); });
+  box.querySelectorAll("[data-first]").forEach(b => b.onclick = () => { const [x] = p.photos.splice(+b.dataset.first, 1); p.photos.unshift(x); mark(); drawPhotos(p); });
+  const inp = $("#phIn");
+  if (inp) inp.onchange = async () => {
+    const files = [...inp.files]; if (!files.length) return;
+    const label = inp.nextElementSibling;
+    busy = true; $("#admSave").disabled = true;
+    let ok = 0;
+    for (const [n, f] of files.entries()) {
+      label.textContent = `Загрузка ${n + 1}/${files.length}…`;
+      try {
+        const r = await ASSETS.upload(await shrink(f));
+        p.photos.push(r.id); ok++;
+      } catch (e) {
+        status(e && e.code === "not_granted" ? "Нет разрешения на загрузку фото." : "Не удалось загрузить фото" + (e && e.code ? ` (${e.code})` : "") + ".", "err");
+      }
+    }
+    busy = false;
+    if (ok) mark(); else $("#admSave").disabled = !dirty;
+    drawPhotos(p);
+  };
+}
+
+/* Resize phone photos to max 1600px JPEG before upload */
+async function shrink(file){
+  try {
+    const bmp = await createImageBitmap(file);
+    const k = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
+    if (k === 1 && file.size < 900000) return file;
+    const c = document.createElement("canvas");
+    c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+    c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
+    return await new Promise((res, rej) => c.toBlob(b => b ? res(b) : rej(new Error("resize")), "image/jpeg", 0.85));
+  } catch (e) { return file; }
+}
+
+async function save(){
+  if (busy || !dirty) return;
+  for (const p of D.products) {
+    if (!p.name.trim()) { tab = "products"; editing = D.products.indexOf(p); draw(); status("У товара нет названия.", "err"); return; }
+  }
+  busy = true; $("#admSave").disabled = true; status("Публикую…");
+  try {
+    await api("/api/content", {method: "PUT", headers: {"content-type": "application/json"}, body: JSON.stringify(D)});
+    SAVED = clone(D); dirty = false; busy = false;
+    renderSite(SAVED); showAdminButton();
+    status("Опубликовано. Покупатели уже видят изменения.");
+  } catch (e) {
+    busy = false;
+    if (e.code === "auth") { $("#adm").close(); status(""); alert("Сессия закончилась. Войдите ещё раз, изменения сохранены в окне."); askPassword(); return; }
+    status("Не получилось опубликовать" + (e.code ? ` (${e.code})` : "") + ". Попробуйте ещё раз.", "err");
+    $("#admSave").disabled = false;
+  }
+}
+
+/* ===================== start ===================== */
+async function load(){
+  for (const url of ["/api/content", "/content/site.json"]) {
+    try { const r = await fetch(url, {cache: "no-cache"}); if (r.ok) return await r.json(); } catch (e) {}
+  }
+  throw new Error("load");
+}
+load().then(S => {
+  SAVED = S; renderSite(S);
+  if (PW) showAdminButton();
+  if (location.hash === "#admin") { history.replaceState(null, "", location.pathname); PW ? openAdmin() : askPassword(); }
+}).catch(() => { $("#app").innerHTML = '<p class="wrap" style="padding:40px 16px">Не удалось загрузить сайт. Обновите страницу.</p>'; });
 })();
 </script>
 </body>
