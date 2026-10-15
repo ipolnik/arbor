@@ -1,0 +1,84 @@
+# Admin panel (Decap CMS). Every save is a commit to this repo; Netlify redeploys the site automatically.
+backend:
+  name: github
+  repo: ipolnik/arbor
+  branch: main
+  commit_messages:
+    update: "Сайт: обновлено через админку"
+
+locale: ru
+site_url: /
+media_folder: images/uploads
+public_folder: /images/uploads
+
+collections:
+  - name: site
+    label: Сайт
+    editor: { preview: false }
+    files:
+      - name: content
+        label: Товары, контакты и тексты
+        file: content/site.json
+        format: json
+        fields:
+          - label: Товары
+            name: products
+            widget: list
+            summary: "{{fields.name}} — {{fields.price}} ₸"
+            fields:
+              - { label: ID, name: id, widget: hidden, default: "item" }
+              - { label: Название, name: name, widget: string }
+              - label: Категория
+                name: cat
+                widget: select
+                default: bed
+                options:
+                  - { label: Кровати, value: bed }
+                  - { label: Детское, value: kids }
+                  - { label: Тумбы, value: night }
+                  - { label: Комоды, value: dresser }
+                  - { label: Шкафы, value: wardrobe }
+                  - { label: Столы, value: table }
+                  - { label: Стулья, value: chair }
+                  - { label: Полки, value: shelf }
+                  - { label: Другое, value: other }
+              - { label: "Цена, ₸", name: price, widget: number, value_type: int, min: 0 }
+              - { label: "Старая цена, ₸ (для акции)", name: old, widget: number, value_type: int, min: 0, required: false }
+              - label: Фото
+                name: photos
+                widget: list
+                required: false
+                hint: Первое фото показывается в каталоге
+                field: { label: Фото, name: photo, widget: image }
+              - label: "Размеры, см"
+                name: sizes
+                widget: list
+                required: false
+                hint: "Например: 140×200, 160×200"
+              - { label: Дерево, name: wood, widget: string, required: false }
+              - { label: Покрытие, name: finish, widget: string, required: false }
+              - { label: "Срок, дней", name: days, widget: string, required: false }
+              - { label: Описание, name: desc, widget: text, required: false }
+              - { label: "Скрыть с сайта (нет в наличии)", name: hidden, widget: boolean, required: false, default: false }
+          - label: Контакты
+            name: config
+            widget: object
+            collapsed: true
+            fields:
+              - { label: "Номер WhatsApp (только цифры: 77011234567)", name: whatsapp, widget: string }
+              - { label: Телефон на сайте, name: phone, widget: string }
+              - { label: "Instagram (без @)", name: instagram, widget: string, required: false }
+              - { label: Логотип, name: logo, widget: image, required: false }
+              - { label: Город, name: city, widget: string }
+              - { label: Адрес, name: address, widget: string, required: false }
+              - { label: Ссылка на 2ГИС, name: gis, widget: string, required: false }
+              - { label: Время работы, name: hours, widget: string, required: false }
+          - label: Тексты
+            name: texts
+            widget: object
+            collapsed: true
+            fields:
+              - { label: Заголовок, name: title, widget: string, hint: "Слово в *звёздочках* выделяется цветом" }
+              - { label: Текст под заголовком, name: lead, widget: text, required: false }
+              - { label: Плашки, name: facts, widget: list, required: false }
+              - { label: Подпись внизу, name: footer, widget: string, required: false }
