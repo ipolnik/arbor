@@ -49,7 +49,7 @@ a{color:inherit}
 .logo .mark{width:42px;height:42px;border-radius:50%;object-fit:cover;flex:none;border:1px solid var(--line)}
 .pill{font:inherit;font-size:16px;font-weight:500;text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:8px 14px;background:var(--surface);color:var(--ink);cursor:pointer}
 .pill.admin{border-color:var(--forest);color:var(--forest);padding:8px 12px}
-.pill.icon{width:42px;height:42px;padding:0;display:grid;place-items:center}
+.pill.ig{display:inline-flex;align-items:center;gap:6px}
 
 .hero{padding-block:28px 8px;position:relative}
 .hero::before{content:"";position:absolute;z-index:-1;inset:-20px 0 auto auto;width:min(260px,70vw);height:260px;border-radius:50%;
@@ -230,8 +230,7 @@ function renderSite(S){
 <header class="top"><div class="wrap">
   <a class="logo" href="#top">${C.logo ? `<img class="mark" src="${esc(src(C.logo))}" alt="">` : ""}<span>ARBOR<small>${esc(C.city)}</small></span></a>
   <div class="acts">
-    <button class="pill admin" id="admBtn" hidden>Управление</button>
-    ${C.instagram ? `<a class="pill icon" href="https://www.instagram.com/${esc(C.instagram)}/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>` : ""}
+    ${C.instagram ? `<a class="pill ig" href="https://www.instagram.com/${esc(C.instagram)}/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>Instagram</a>` : ""}
   </div>
 </div></header>
 <main class="wrap" id="top">
@@ -265,6 +264,7 @@ function renderSite(S){
 </main>
 <div class="bar"><div class="inner">
   <a class="btn primary" href="${wa("Здравствуйте! Пишу с сайта Arbor, хочу узнать про мебель.")}" target="_blank" rel="noopener">Написать в WhatsApp</a>
+  <button class="btn ghost" id="admBtn" hidden style="flex:0 0 auto;font-size:22px;padding:10px 16px" aria-label="Управление сайтом" title="Управление сайтом">⚙</button>
 </div></div>
 <dialog class="sheet" id="sheet" aria-labelledby="sTitle">
   <div style="position:relative"><div class="gallery" id="sGal"></div><div class="dots" id="sDots"></div>
