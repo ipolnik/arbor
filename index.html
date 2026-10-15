@@ -41,13 +41,15 @@ a{color:inherit}
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:0}
 .top::after{content:"";display:block;height:3px;background:var(--rainbow)}
 .top .wrap{display:flex;align-items:center;justify-content:space-between;padding-block:12px;gap:12px}
-.top .acts{display:flex;gap:8px}
+.top .acts{display:flex;gap:8px;flex:none;align-items:center}
 .logo{font-family:var(--f-display);font-size:26px;letter-spacing:.18em;text-decoration:none;line-height:1}
-.logo small{display:block;font-family:var(--f-mono);font-size:12px;letter-spacing:.2em;color:var(--muted);margin-top:4px;text-transform:uppercase}
-.logo{display:flex;align-items:center;gap:10px}
+.logo small{display:block;font-family:var(--f-body);font-size:13px;letter-spacing:.06em;color:var(--muted);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.logo{display:flex;align-items:center;gap:10px;min-width:0}
+.logo > span{min-width:0}
 .logo .mark{width:42px;height:42px;border-radius:50%;object-fit:cover;flex:none;border:1px solid var(--line)}
 .pill{font:inherit;font-size:16px;font-weight:500;text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:8px 14px;background:var(--surface);color:var(--ink);cursor:pointer}
-.pill.admin{border-color:var(--forest);color:var(--forest)}
+.pill.admin{border-color:var(--forest);color:var(--forest);padding:8px 12px}
+.pill.icon{width:42px;height:42px;padding:0;display:grid;place-items:center}
 
 .hero{padding-block:28px 8px;position:relative}
 .hero::before{content:"";position:absolute;z-index:-1;inset:-20px 0 auto auto;width:min(260px,70vw);height:260px;border-radius:50%;
@@ -226,10 +228,10 @@ function renderSite(S){
 
   $("#app").innerHTML = `
 <header class="top"><div class="wrap">
-  <a class="logo" href="#top">${C.logo ? `<img class="mark" src="${esc(src(C.logo))}" alt="">` : ""}<span>ARBOR<small>Мебель · ${esc(C.city)}</small></span></a>
+  <a class="logo" href="#top">${C.logo ? `<img class="mark" src="${esc(src(C.logo))}" alt="">` : ""}<span>ARBOR<small>${esc(C.city)}</small></span></a>
   <div class="acts">
     <button class="pill admin" id="admBtn" hidden>Управление</button>
-    ${C.instagram ? `<a class="pill" href="https://www.instagram.com/${esc(C.instagram)}/" target="_blank" rel="noopener">Instagram</a>` : ""}
+    ${C.instagram ? `<a class="pill icon" href="https://www.instagram.com/${esc(C.instagram)}/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>` : ""}
   </div>
 </div></header>
 <main class="wrap" id="top">
