@@ -50,6 +50,8 @@ a{color:inherit}
 .pill{font:inherit;font-size:16px;font-weight:500;text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:8px 14px;background:var(--surface);color:var(--ink);cursor:pointer}
 .pill.admin{border-color:var(--forest);color:var(--forest);padding:8px 12px}
 .pill.ig{display:inline-flex;align-items:center;gap:6px}
+.pill.icon{width:42px;height:42px;padding:0;display:grid;place-items:center}
+@media (max-width:400px){.logo{font-size:22px;letter-spacing:.12em;gap:8px}.logo .mark{width:36px;height:36px}.top .wrap{gap:8px}.top .acts{gap:6px}.pill.ig{padding:8px 12px}}
 
 .hero{padding-block:28px 8px;position:relative}
 .hero::before{content:"";position:absolute;z-index:-1;inset:-20px 0 auto auto;width:min(260px,70vw);height:260px;border-radius:50%;
@@ -230,6 +232,7 @@ function renderSite(S){
 <header class="top"><div class="wrap">
   <a class="logo" href="#top">${C.logo ? `<img class="mark" src="${esc(src(C.logo))}" alt="">` : ""}<span>ARBOR<small>${esc(C.city)}</small></span></a>
   <div class="acts">
+    <button class="pill admin icon" id="admBtn" hidden aria-label="Управление сайтом" title="Управление сайтом"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
     ${C.instagram ? `<a class="pill ig" href="https://www.instagram.com/${esc(C.instagram)}/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>Instagram</a>` : ""}
   </div>
 </div></header>
@@ -264,7 +267,6 @@ function renderSite(S){
 </main>
 <div class="bar"><div class="inner">
   <a class="btn primary" href="${wa("Здравствуйте! Пишу с сайта Arbor, хочу узнать про мебель.")}" target="_blank" rel="noopener">Написать в WhatsApp</a>
-  <button class="btn ghost" id="admBtn" hidden style="flex:0 0 auto;font-size:22px;padding:10px 16px" aria-label="Управление сайтом" title="Управление сайтом">⚙</button>
 </div></div>
 <dialog class="sheet" id="sheet" aria-labelledby="sTitle">
   <div style="position:relative"><div class="gallery" id="sGal"></div><div class="dots" id="sDots"></div>
